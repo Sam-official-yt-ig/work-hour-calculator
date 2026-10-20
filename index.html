@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Is It Worth It? 💸 Work-Hour Calculator</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+    }
+    h2 { margin-top: 0; text-align: center; color: #38bdf8; }
+    label { display: block; margin-top: 15px; font-weight: bold; font-size: 14px; color: #94a3b8; }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: white;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover { background: #7dd3fc; }
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      background: #0f172a;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+      border: 1px solid #334155;
+    }
+    .time-highlight {
+      font-size: 28px;
+      font-weight: bold;
+      color: #f43f5e;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Is It Worth It? 💸</h2>
+    
+    <label for="wage">Your Hourly Wage ($)</label>
+    <input type="number" id="wage" placeholder="e.g. 20" min="1">
+
+    <label for="item">Item Name</label>
+    <input type="text" id="item" placeholder="e.g. Wireless Headphones">
+
+    <label for="price">Item Price ($)</label>
+    <input type="number" id="price" placeholder="e.g. 150" min="1">
+
+    <button onclick="calculateCost()">Calculate Work Time ⏳</button>
+
+    <div class="result" id="resultBox">
+      <div id="itemTitle" style="color: #94a3b8;"></div>
+      <div class="time-highlight" id="timeOutput"></div>
+      <div id="verdict" style="font-size: 14px; color: #cbd5e1;"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculateCost() {
+      const wage = parseFloat(document.getElementById('wage').value);
+      const item = document.getElementById('item').value || "This item";
+      const price = parseFloat(document.getElementById('price').value);
+
+      if (!wage || !price || wage <= 0 || price <= 0) {
+        alert("Please enter valid positive numbers for wage and price!");
+        return;
+      }
+
+      const totalHours = price / wage;
+      const hours = Math.floor(totalHours);
+      const minutes = Math.round((totalHours - hours) * 60);
+
+      document.getElementById('itemTitle').innerText = `To buy "${item}":`;
+      
+      let timeString = "";
+      if (hours > 0) timeString += `${hours} hr${hours > 1 ? 's' : ''} `;
+      if (minutes > 0 || hours === 0) timeString += `${minutes} min${minutes > 1 ? 's' : ''}`;
+      
+      document.getElementById('timeOutput').innerText = timeString;
+
+      // Dynamic Verdict
+      let verdict = "";
+      if (totalHours < 1) {
+        verdict = "Quick buy! Less than an hour of work. ⚡";
+      } else if (totalHours <= 8) {
+        verdict = "That's nearly a full workday! Think carefully. 🤔";
+      } else if (totalHours <= 40) {
+        verdict = "That's over a full WORK WEEK of your life! 🚨";
+      } else {
+        verdict = "Extreme purchase! Months of labor required. 😱";
+      }
+
+      document.getElementById('verdict').innerText = verdict;
+      document.getElementById('resultBox').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
